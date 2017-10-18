@@ -7,7 +7,7 @@
       return $('<a/>').attr({
         style: 'background-color: #2f6fbf; padding: 10px; text-decoration: none',
         href: $(this).data('full-size'),
-        download: true
+        download: $(this).data('full-size').match(/\/([^\/]*)$/)[1],
       }).text('Download full size image')[0].outerHTML;
     }
    });
