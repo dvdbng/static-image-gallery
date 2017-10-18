@@ -1,7 +1,7 @@
 import os, itertools, json, re
 from contextlib import contextmanager
 
-from helpers import parse_date
+from helpers import parse_date, is_photo
 from shared import get_shared
 from config import DST_FOLDER
 
@@ -43,7 +43,8 @@ def gen_index(fn, photos):
     with gen_file(fn) as (f, path):
         for orig, small in photos:
             thumb = os.path.join(os.path.dirname(small), 'thumbs', os.path.basename(small))
-            f.write('\n<a href="%s" target="_blank" data-full-size="%s">%s</a>' % (path(small), path(orig), image(small, path(thumb))))
+            klass = 'photo' if is_photo(orig) else 'video'
+            f.write('\n<a href="%s" target="_blank" class="%s" data-full-size="%s">%s</a>' % (path(small), klass, path(orig), image(small, path(thumb))))
 
 
 def gen_index_list(fn, indexes): # indexes = [name, path, [[small, orig]]...]...
@@ -112,9 +113,8 @@ for dir, photos in by_month:
 
 # Shared photos
 for shared_key, photos in get_shared(photo_map):
-    photos = sorted(list(photos), key=lambda item: os.path.basename(item[1]), reverse=True)
+    photos = sorted(list(photos), key=lambda item: os.path.basename(item[1]))
     gen_index(os.path.join(DST_FOLDER, 'shared', shared_key, 'index.html'), photos)
-    print(shared_key, len(photos))
 
 # Indexes by category
 for category, images in images_by_category.iteritems():
