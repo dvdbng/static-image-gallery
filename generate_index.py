@@ -113,7 +113,7 @@ for dir, photos in by_month:
 
 # Shared photos
 for shared_key, photos in get_shared(photo_map):
-    photos = sorted(list(photos), key=lambda item: os.path.basename(item[1]))
+    photos = sorted(list(photos), key=lambda item: os.path.basename(item[1]), reverse=True)
     gen_index(os.path.join(DST_FOLDER, 'shared', shared_key, 'index.html'), photos)
 
 # Indexes by category
