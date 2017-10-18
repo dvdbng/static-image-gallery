@@ -22,19 +22,31 @@ FILE_REGEXPS = [
         source.replace('YYYY', '(?P<y>20\d\d)')
        .replace('MM'  , '(?P<m>\d\d)')
        .replace('DD'  , '(?P<d>\d\d)')
+       .replace('hh'  , '(?P<h>\d\d)')
+       .replace('mm'  , '(?P<min>\d\d)')
+       .replace('ss'  , '(?P<s>\d\d)')
     ) for source in
+    'YYYYMMDDhhmmss',
+    'IMG_YYYYMMDD_hhmmss',
+    'FB_IMG_YYYYMMDDhhmmss',
+    'MM-DD-YYYY-hh-mm-ss',
     'YYYYMMDD',
     'IMG_YYYYMMDD',
     'FB_IMG_YYYYMMDD',
     'MM-DD-YYYY-',
 ]
 
-def parse_date(name):
+def parse_date_time(name):
     for rx in FILE_REGEXPS:
         m = rx.match(name)
         if m:
-            return m.group('y'), m.group('m'), m.group('d')
-    return None, None, None
+            g = m.groupdict()
+            return g['y'], g['m'], g['d'], g.get('h', 0), g.get('min', 0), g.get('s', 0)
+    return None, None, None, None, None, None
+
+
+def parse_date(name):
+    return parse_date_time(name)[:3]
 
 def itermedia():
     for folder in ORIGIN_FOLDERS:
