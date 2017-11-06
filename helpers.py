@@ -27,6 +27,7 @@ FILE_REGEXPS = [
        .replace('ss'  , '(?P<s>\d\d)')
     ) for source in
     'YYYYMMDDhhmmss',
+    'YYYYMMDD_hhmmss',
     'IMG_YYYYMMDD_hhmmss',
     'FB_IMG_YYYYMMDDhhmmss',
     'MM-DD-YYYY-hh-mm-ss',
